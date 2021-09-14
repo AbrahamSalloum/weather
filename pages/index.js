@@ -26,14 +26,14 @@ export default function Home() {
         <h2 className={styles.title}>
         Weather
         </h2>  
-       Click in map to for best guess location
+       Click in map for best guess location
       
       <VMap  parentCallback={callback} /> 
       <MainWeather slatlong={latlong} />  
       </main>
       
       <footer className={styles.footer}>
-            Data Provided by <div><a href="https://open-meteo.com/">https://open-meteo.com/</a></div>
+            Data Provided by<pre> <a href="https://open-meteo.com/"> https://open-meteo.com</a></pre>
       </footer>
     </div>
   ) 

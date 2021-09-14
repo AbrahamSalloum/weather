@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import React, { PureComponent } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Bar, Area, ReferenceLine, Brush,BarChart,ResponsiveContainer } from 'recharts';
 import { DateTime } from "luxon";
+
 const desc = {
     "0":    "Clear sky",
     "1": 	"Mainly clear, partly cloudy, and overcast",
@@ -111,7 +112,7 @@ const MainWeather = ({slatlong}) => {
         }
         return null;
     }
-
+    
     return (
         <div style={{"display": "flex", "flex-direction": "column", "width": "100%"}}>
             <div className="buttons"><button onClick={() => getweather()}>Get Weather</button></div>
@@ -133,9 +134,9 @@ const MainWeather = ({slatlong}) => {
                         />
                         <Legend/>
                         <Brush endIndex={chartdata.length / 4} />
-                        <Area unit="&deg;C" yAxisId="degy"  type="monotone" dataKey="uv" fill="#82ca9d" name="temp" xAxisId="name" />
-                        <Area unit="&deg;C" yAxisId="degy" fillOpacity="1" type="monotone" dataKey="pv" fill="#8884d8" activeDot={{ r: 8 }} name="feels like" xAxisId="name" />
-                        <Bar unit="mm" dataKey="precipitation" yAxisId="pcent" barSize={20} fill="#413ea0" name="precipitation" xAxisId="name" />
+                        <Area unit="&deg;C" yAxisId="degy" dataKey="uv" fill="#82ca9d" name="temp" xAxisId="name" type="basis"/>
+                        <Area unit="&deg;C" yAxisId="degy" fillOpacity="1" dataKey="pv" fill="#8884d8" activeDot={{ r: 8 }} name="feels like" xAxisId="name" type="basis" connectNulls/>
+                        <Bar unit="mm" dataKey="precipitation" yAxisId="pcent" barSize={20} fill="#413ea0" name="precipitation" xAxisId="name" connectNulls/>
                         <ReferenceLine x={closesttime()} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy" xAxisId="name" />
                         </ComposedChart>
                     </ResponsiveContainer>
