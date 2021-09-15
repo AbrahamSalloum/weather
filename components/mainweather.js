@@ -53,20 +53,29 @@ const MainWeather = ({slatlong}) => {
     }
     
     const getdata = (w) => {
-        const data = []
-        for(let item in w.hourly.time){
-            data.push({unixtime: DateTime.fromISO(w.hourly.time[item],{ zone: 'utc'}).toMillis(w.hourly.time[item]).toString(), 
-            name: DateTime.fromISO(
-            w.hourly.time[item],{ zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_SHORT), 
-            uv: w.hourly.temperature_2m[item], 
-            pv: w.hourly.apparent_temperature[item], 
-            cc: w.hourly.cloudcover[item], 
-            weathercode: w.hourly.weathercode[item], 
-            precipitation: w.hourly.precipitation[item], 
-            windspeed: w.hourly.windspeed_10m[item],
-            winddirection: w.hourly.winddirection_10m[item]})
+        let graphdata = []
+        for(let i in w.hourly.time){
+            graphdata.push({
+                unixtime: DateTime.fromISO(w.hourly.time[i],{ zone: 'utc'}).toMillis(), 
+                rawtime:  w.hourly.time[i], 
+                name:     DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_SHORT), 
+                uv: w.hourly.temperature_2m[i], 
+                pv: w.hourly.apparent_temperature[i], 
+                cc: w.hourly.cloudcover[i], 
+                weathercode: w.hourly.weathercode[i], 
+                precipitation: w.hourly.precipitation[i], 
+                windspeed: w.hourly.windspeed_10m[i],
+                winddirection: w.hourly.winddirection_10m[i]
+            })
         }
-        setChartData(data)
+
+        const q = graphdata.sort((a, b) => {
+            if(a.unixtime < b.unixtime < 0) return -1
+            if(a.unixtime > b.unixtime < 0) return 1
+            return 0
+        })
+        
+        setChartData(q)
         //return data
     }
 
@@ -76,8 +85,8 @@ const MainWeather = ({slatlong}) => {
 
     const closesttime = () => {
         const data = chartdata
-        const currtime = DateTime.now().toUTC().toLocal().toMillis()
-        let closest = data.sort(function(a, b){
+        const currtime = DateTime.now().toLocal().toMillis()
+        let closest = [...data].sort(function(a, b){
         return Math.abs(currtime-a.unixtime) - Math.abs(currtime-b.unixtime);
         });
         return closest[0].name
@@ -87,7 +96,7 @@ const MainWeather = ({slatlong}) => {
     const  renderTooltipTemp = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <div className="custom-tooltip" style={{"background-color": "white", "border": "1px solid silver"}}>
+                <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
                     <span style={{"color": payload[0].fill}}>{`${payload[0].name}: ${payload[0].value} ${payload[0].unit} `}</span>
                     <span style={{"color": payload[1].fill}}>{`${payload[1].name}: ${payload[1].value} ${payload[1].unit} `}</span>
@@ -101,9 +110,8 @@ const MainWeather = ({slatlong}) => {
 
     const  RenderTooltipWind = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
-            console.log(payload)
             return (
-                <div className="custom-tooltip" style={{"background-color": "white", "border": "1px solid silver"}}>
+                <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
                     <span style={{"color": payload[0].fill}}>{`${payload[0].name}: ${payload[0].value} ${payload[0].unit} `}</span>
                     <p className="desc">Direction: {payload[0].payload.winddirection}&deg;</p>
@@ -178,24 +186,17 @@ const MainWeather = ({slatlong}) => {
                             @media (max-width: 800px) {
                                 .split {
                                     width: 100%; 
-                                  flex-direction: column;
+                                    flex-direction: column;
                                 }
-                              }
+                            }
 
-                              .graph {
-                                  width: 100%; 
-                              }
-
-                              .buttons {
-                                  
-                              }
-                            
+                            .graph {
+                                width: 100%; 
+                            }
                         `}</style>
                 </div>
 
                     </div>  
-          
-          
           : null
         }
         </div>
