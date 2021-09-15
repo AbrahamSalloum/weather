@@ -154,11 +154,12 @@ const MainWeather = ({slatlong}) => {
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={chartdata}>
                                 <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis width={20}/>
+                                <XAxis dataKey="name" xAxisId="name"/>
+                                <YAxis width={20} yAxisId="degy" />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="cc" fill="#82ca9d" name="cloudcover" unit="%"/>
+                                <Bar dataKey="cc" fill="#82ca9d" name="cloudcover" unit="%"  yAxisId="degy"  xAxisId="name"/>
+                                <ReferenceLine x={closesttime()} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy"  xAxisId="name"/>
                                 <Brush endIndex={chartdata.length / 4} />
                             </BarChart>
                         </ResponsiveContainer>
@@ -167,11 +168,12 @@ const MainWeather = ({slatlong}) => {
                         <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={chartdata}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis width={20}/>
+                            <XAxis dataKey="name" xAxisId="name"/>
+                            <YAxis width={20} yAxisId="degy" />
                             <Tooltip content={RenderTooltipWind} />
                             <Legend />
-                            <Bar dataKey="windspeed" fill="#8884d8" name="windspeed" unit="km/h"/>
+                            <Bar dataKey="windspeed" fill="#8884d8" name="windspeed" unit="km/h"  yAxisId="degy"  xAxisId="name"/>
+                            <ReferenceLine x={closesttime()} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy"  xAxisId="name"/>
                             <Brush endIndex={chartdata.length / 4} />
                         </BarChart>
                         </ResponsiveContainer>
