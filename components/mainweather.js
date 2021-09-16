@@ -94,15 +94,15 @@ const MainWeather = ({slatlong}) => {
 
 
     const  renderTooltipTemp = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            console.log(payload)
+        if (!!active) {
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
-                    <span style={{"color": payload[0].fill}}>{`${payload[0].name}: ${payload[0].value} ${payload[0].unit} `}</span>
-                    <span style={{"color": payload[1].fill}}>{`${payload[1].name}: ${payload[1].value} ${payload[1].unit} `}</span>
-                    <span style={{"color": payload[2].fill}}>{`${payload[2].name}: ${payload[2].value} ${payload[2].unit} `}</span>
-                    <span style={{"color": payload[3].stroke}}>{`${payload[3].name}: ${payload[3].value} ${payload[3].unit} `}</span>
+                    {
+                        payload.map((point, i) => {
+                            return <span key={i} style={{"color": point.stroke}}>{`${point.name}: ${point.value} ${point.unit} `}</span>
+                        })
+                    }
                     <p className="desc">Description: {desc[payload[0].payload.weathercode]}</p>
                 </div>
             );
@@ -111,7 +111,7 @@ const MainWeather = ({slatlong}) => {
     }
 
     const  RenderTooltipWind = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
+        if (active) {
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
@@ -127,7 +127,6 @@ const MainWeather = ({slatlong}) => {
         <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
             <div className="buttons"><button onClick={() => getweather()}>Get Weather</button></div>
         {!!chartdata ? 
-            
             <div>
                 <Quicksummary chartdata={chartdata} closesttime={closesttime}/>
                 <div className="graph">
@@ -140,7 +139,6 @@ const MainWeather = ({slatlong}) => {
                             <YAxis width={40} yAxisId="pcent" />
                             <Tooltip 
                             content={renderTooltipTemp}
-                            
                         />
                         <Legend/>
                         <Brush endIndex={chartdata.length / 4} />
