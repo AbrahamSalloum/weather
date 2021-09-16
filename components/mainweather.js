@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import React, { PureComponent } from 'react';
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Bar, Area, ReferenceLine, Brush,BarChart,ResponsiveContainer } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Bar, Area, ReferenceLine, Brush,BarChart,ResponsiveContainer,Line } from 'recharts';
 import { DateTime } from "luxon";
 
 const desc = {
@@ -58,14 +58,15 @@ const MainWeather = ({slatlong}) => {
             graphdata.push({
                 unixtime: DateTime.fromISO(w.hourly.time[i],{ zone: 'utc'}).toMillis(), 
                 rawtime:  w.hourly.time[i], 
-                name:     DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_SHORT), 
+                name:     DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY), 
                 uv: w.hourly.temperature_2m[i], 
                 pv: w.hourly.apparent_temperature[i], 
                 cc: w.hourly.cloudcover[i], 
                 weathercode: w.hourly.weathercode[i], 
                 precipitation: w.hourly.precipitation[i], 
                 windspeed: w.hourly.windspeed_10m[i],
-                winddirection: w.hourly.winddirection_10m[i]
+                winddirection: w.hourly.winddirection_10m[i],
+                humidity: w.hourly.relativehumitidy_2m[i]
             })
         }
 
@@ -76,7 +77,6 @@ const MainWeather = ({slatlong}) => {
         })
         
         setChartData(q)
-        //return data
     }
 
     const formatXAxis = (xtick) => {
@@ -95,12 +95,14 @@ const MainWeather = ({slatlong}) => {
 
     const  renderTooltipTemp = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
+            console.log(payload)
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
                     <span style={{"color": payload[0].fill}}>{`${payload[0].name}: ${payload[0].value} ${payload[0].unit} `}</span>
                     <span style={{"color": payload[1].fill}}>{`${payload[1].name}: ${payload[1].value} ${payload[1].unit} `}</span>
                     <span style={{"color": payload[2].fill}}>{`${payload[2].name}: ${payload[2].value} ${payload[2].unit} `}</span>
+                    <span style={{"color": payload[3].stroke}}>{`${payload[3].name}: ${payload[3].value} ${payload[3].unit} `}</span>
                     <p className="desc">Description: {desc[payload[0].payload.weathercode]}</p>
                 </div>
             );
@@ -122,7 +124,7 @@ const MainWeather = ({slatlong}) => {
     }
     
     return (
-        <div style={{"display": "flex", "flex-direction": "column", "width": "100%"}}>
+        <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
             <div className="buttons"><button onClick={() => getweather()}>Get Weather</button></div>
         {!!chartdata ? 
             
@@ -144,7 +146,8 @@ const MainWeather = ({slatlong}) => {
                         <Brush endIndex={chartdata.length / 4} />
                         <Area unit="&deg;C" yAxisId="degy" dataKey="uv" fill="#82ca9d" name="temp" xAxisId="name" type="basis"/>
                         <Area unit="&deg;C" yAxisId="degy" fillOpacity="1" dataKey="pv" fill="#8884d8" activeDot={{ r: 8 }} name="feels like" xAxisId="name" type="basis" connectNulls/>
-                        <Bar unit="mm" dataKey="precipitation" yAxisId="pcent" barSize={20} fill="#413ea0" name="precipitation" xAxisId="name" connectNulls/>
+                        <Bar  unit="mm"     yAxisId="pcent" dataKey="precipitation"  barSize={20} fill="#413ea0" name="precipitation" xAxisId="name" connectNulls/>
+                        <Line unit="&deg;C" yAxisId="pcent"  dataKey="humidity" stroke="orange" xAxisId="name" type="basis" connectNulls/>
                         <ReferenceLine x={closesttime()} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy" xAxisId="name" />
                         </ComposedChart>
                     </ResponsiveContainer>

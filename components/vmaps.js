@@ -2,7 +2,7 @@
 
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent, useMapEvents, MapConsumer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useEffect, useState, memo } from 'react'
+import { useState } from 'react'
 
 const  Vmap = ({parentCallback}) => {
 
@@ -10,10 +10,10 @@ const  Vmap = ({parentCallback}) => {
 
   const  InitialThings = () => {
     const map = useMapEvents({
-      click(ev) {
+      click() {
         map.locate()
       },
-      load(ev){
+      load(){
         map.locate()
       },
       locationfound(ev) {
@@ -37,11 +37,10 @@ const  Vmap = ({parentCallback}) => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-        
         <InitialThings />
       </MapContainer>           
       </div>
     )
 }
 
-export default memo(Vmap)
+export default Vmap
