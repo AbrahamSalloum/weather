@@ -57,8 +57,8 @@ const MainWeather = ({slatlong}) => {
         for(let i in w.hourly.time){
             graphdata.push({
                 unixtime: DateTime.fromISO(w.hourly.time[i],{ zone: 'utc'}).toMillis(), 
-                rawtime:  w.hourly.time[i], 
-                name:     DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY), 
+                rawtime: w.hourly.time[i], 
+                name: DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY), 
                 uv: w.hourly.temperature_2m[i], 
                 pv: w.hourly.apparent_temperature[i], 
                 cc: w.hourly.cloudcover[i], 
@@ -111,7 +111,7 @@ const MainWeather = ({slatlong}) => {
     }
 
     const  RenderTooltipWind = ({ active, payload, label }) => {
-        if (active) {
+        if (!!active) {
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
@@ -125,18 +125,31 @@ const MainWeather = ({slatlong}) => {
     
     return (
         <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
-            <div className="buttons"><button onClick={() => getweather()}>Get Weather</button></div>
+            <div style={{"display": "flex", "flexDirection": "row", "width": "100%"}}>
+                <button onClick={() => getweather()} className="bbutton">Get Weather 🌞</button>
+                {!!chartdata ? <Quicksummary chartdata={chartdata} closesttime={closesttime}/> : null}
+                <style jsx>{`
+                .bbutton {
+                    background-color: skyblue;
+                    border: none;
+                    padding: 5px;
+                    white-space: nowrap; 
+                    text-align: center;
+                    height: fit-content;
+                }
+            `}</style>
+            </div>
         {!!chartdata ? 
-            <div>
-                <Quicksummary chartdata={chartdata} closesttime={closesttime}/>
+            <>
+                
                 <div className="graph">
                     <ResponsiveContainer width="100%" height={300}>
                         <ComposedChart
                             data={chartdata}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" angle={5} tickFormatter={formatXAxis} xAxisId="name" />
-                            <YAxis width={25} yAxisId="degy" />
-                            <YAxis width={40} yAxisId="pcent" />
+                            <YAxis width={20} yAxisId="degy" />
+                            <YAxis width={20} yAxisId="pcent" />
                             <Tooltip 
                             content={renderTooltipTemp}
                         />
@@ -150,8 +163,8 @@ const MainWeather = ({slatlong}) => {
                         </ComposedChart>
                     </ResponsiveContainer>
                 </div>
-                <div className="split">
-                    <div className="graph">        
+                <div className="split" >
+                    <div className="graph">      
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={chartdata}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -165,7 +178,7 @@ const MainWeather = ({slatlong}) => {
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
-                    <div className="graph"> 
+                    <div className="graph">      
                         <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={chartdata}>
                             <CartesianGrid strokeDasharray="3 3" />
@@ -196,10 +209,19 @@ const MainWeather = ({slatlong}) => {
                             .graph {
                                 width: 100%; 
                             }
+
+                            .bbutton {
+                                background-color: skyblue;
+                                border: none;
+                                padding": 5px;
+                                white-space: "nowrap; 
+                                text-align: center;
+                                 height: fit-content;
+                            }
                         `}</style>
                 </div>
 
-                    </div>  
+                    </>  
           : null
         }
         </div>
@@ -210,10 +232,12 @@ const MainWeather = ({slatlong}) => {
 const Quicksummary = ({chartdata, closesttime}) => {
         const data = chartdata.filter((ele) => ele.name == closesttime())
     return(
-        <div>
-        current temp: {data[0].uv}  (feels like: {data[0].pv})
-        current precipitation: {data[0].precipitation} 
-        current windspeed: {data[0].windspeed}
+        <div style={{"padding-left": "5px"}}>
+        <b>
+         <span>current temp: {data[0].uv}  (feels like: {data[0].pv}) </span>
+         <span>current precipitation: {data[0].precipitation} </span>
+         <span>current windspeed: {data[0].windspeed}</span>
+        </b>
         </div>
     )
 }
