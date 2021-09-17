@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Bar, Area, ReferenceLine, Brush,BarChart,ResponsiveContainer,Line } from 'recharts';
 import { DateTime } from "luxon";
 
@@ -100,15 +100,16 @@ const MainWeather = ({slatlong}) => {
                     <p className="label"><b>{`${label}`}</b></p>
                     {
                         payload.map((point, i) => {
-                            return <span key={i} style={{"color": point.stroke}}>{`${point.name}: ${point.value} ${point.unit} `}</span>
+                            return <span key={i} style={{"color": point.stroke}}>{`${point.name}: ${point.value} ${point.unit} `}<br/></span>
                         })
                     }
-                    <p className="desc">Description: {desc[payload[0].payload.weathercode]}</p>
+                    <p className="desc">{desc[payload[0].payload.weathercode]}</p>
                 </div>
             );
         }
         return null;
     }
+
 
     const  RenderTooltipWind = ({ active, payload, label }) => {
         if (!!active) {
@@ -198,46 +199,41 @@ const MainWeather = ({slatlong}) => {
                                 flex-direction: row;
                                 width: 100%; 
                             }
-
                             @media (max-width: 800px) {
                                 .split {
                                     width: 100%; 
                                     flex-direction: column;
                                 }
                             }
-
                             .graph {
                                 width: 100%; 
                             }
-
                             .bbutton {
                                 background-color: skyblue;
                                 border: none;
                                 padding": 5px;
                                 white-space: "nowrap; 
                                 text-align: center;
-                                 height: fit-content;
+                                height: fit-content;
                             }
                         `}</style>
                 </div>
-
-                    </>  
-          : null
+            </>  
+        : null
         }
         </div>
     )
-
 }
 
 const Quicksummary = ({chartdata, closesttime}) => {
-        const data = chartdata.filter((ele) => ele.name == closesttime())
+    const data = chartdata.filter((ele) => ele.name == closesttime())
     return(
         <div style={{"padding-left": "5px"}}>
-        <b>
-         <span>current temp: {data[0].uv}  (feels like: {data[0].pv}) </span>
-         <span>current precipitation: {data[0].precipitation} </span>
-         <span>current windspeed: {data[0].windspeed}</span>
-        </b>
+            <b>
+                <span>current temp: {data[0].uv}  (feels like: {data[0].pv}) </span>
+                <span>current precipitation: {data[0].precipitation} </span>
+                <span>current windspeed: {data[0].windspeed}</span>
+            </b>
         </div>
     )
 }
