@@ -21,9 +21,10 @@ export default function Home() {
   }
 
   const [latlong, setLatLong] = useState([51.505, -0.09])
-
+  
     const callback = useCallback((coords) => {
       setLatLong(coords);
+      router.push(coords.join(','), undefined, { shallow: true })
     }, []);
 
     useEffect(() => {
@@ -39,7 +40,7 @@ export default function Home() {
     },[r])
 
   while(router.isReady == false) return '...'
-
+  
   return (
     <div><a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
     <div className={styles.container}>
