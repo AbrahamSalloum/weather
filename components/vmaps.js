@@ -31,7 +31,7 @@ const  Vmap = ({parentCallback, slatlong}) => {
 
     return(
         <div style={{ height: "100%", width: "100%", margin: 0, padding: 0 }}>
-        {JSON.stringify(latlong)}
+         
         <MapContainer center={latlong} zoom={13} scrollWheelZoom={true} style={{ height: "450px", width: "100%" }}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

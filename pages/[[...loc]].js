@@ -41,6 +41,7 @@ export default function Home() {
   while(router.isReady == false) return '...'
 
   return (
+    <div><a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
     <div className={styles.container}>
       <Head>
         <title>Weather</title>
@@ -60,6 +61,7 @@ export default function Home() {
       <footer className={styles.footer}>
             Data Provided by<pre> <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer"> https://open-meteo.com</a></pre>
       </footer>
+    </div>
     </div>
   ) 
 }
