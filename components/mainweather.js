@@ -46,6 +46,9 @@ const MainWeather = ({slatlong}) => {
     },[slatlong])
     
     const getweather = async () => {
+        const tz = await fetch(`/api/tz/${latlong.join(',')}`)
+        const tz_name = await tz.json()
+        console.log(tz_name)
         const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m`)
         const w = await weather.json()
         setweather(w)

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "geo-tz": "^6.0.1",
     "leaflet": "^1.7.1",
     "luxon": "^2.0.2",
     "next": "11.1.2",
