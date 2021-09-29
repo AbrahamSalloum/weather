@@ -4,9 +4,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent, useMapEven
 import 'leaflet/dist/leaflet.css'
 import { useState } from 'react'
 
-const  Vmap = ({parentCallback}) => {
+const  Vmap = ({parentCallback, slatlong}) => {
 
-  const [latlong, setLatLong] = useState([51.505,-0.09])
+  const [latlong, setLatLong] = useState(slatlong)
 
   const  InitialThings = () => {
     const map = useMapEvents({

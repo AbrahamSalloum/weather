@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useEffect, useState, useCallback,useRef } from 'react';
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic';
@@ -6,12 +7,38 @@ import MainWeather from '../components/mainweather'
 const VMap = dynamic(() => import('../components/vmaps'),{ ssr: false })
 
 export default function Home() {
+  const router = useRouter()
+  const r = router.query
+  
+  const isCoords = (coords) => {
+    console.log(coords)
+    if(coords.length == 2){
+      if((isNaN(coords[0]) && isNaN(coords[1])) === false){
+        return true
+      }
+    }
+    return false
+  }
 
-  const [latlong, setLatLong] = useState([51.505,-0.09])
+  const [latlong, setLatLong] = useState([51.505, -0.09])
 
     const callback = useCallback((coords) => {
       setLatLong(coords);
     }, []);
+
+    useEffect(() => {
+      if(!!r.loc) {
+        if(isCoords(r.loc[0].split(','))) {
+          setLatLong(r.loc[0].split(','))
+        }
+
+        // search for locatio based on name here and return coords
+        
+       
+      }
+    },[r])
+
+  while(router.isReady == false) return '...'
 
   return (
     <div className={styles.container}>
@@ -27,7 +54,7 @@ export default function Home() {
         </h2>  
        Click in map for best guess location
       
-      <VMap  parentCallback={callback} /> 
+      <VMap  parentCallback={callback} slatlong={latlong} /> 
       <MainWeather slatlong={latlong} />  
       </main>
       <footer className={styles.footer}>
