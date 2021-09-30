@@ -5,7 +5,7 @@
   margin-right: auto
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1500px) {
   .container {
     width: 100%;
     

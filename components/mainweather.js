@@ -49,7 +49,7 @@ const MainWeather = ({slatlong}) => {
         const tz = await fetch(`/api/tz/${latlong.join(',')}`)
         const tz_name = await tz.json()
         console.log(tz_name)
-        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m`)
+        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name.tz[0]}`)
         const w = await weather.json()
         setweather(w)
         getdata(w)
@@ -202,14 +202,14 @@ const MainWeather = ({slatlong}) => {
                                 flex-direction: row;
                                 width: 100%; 
                             }
-                            @media (max-width: 800px) {
+                            @media (max-width: 1300px) {
                                 .split {
                                     width: 100%; 
                                     flex-direction: column;
                                 }
                             }
                             .graph {
-                                width: 100%; 
+                                 width: 100%;
                             }
                             .bbutton {
                                 background-color: skyblue;
@@ -220,10 +220,17 @@ const MainWeather = ({slatlong}) => {
                                 height: fit-content;
                             }
                         `}</style>
-                </div>
+                        
+                        </div>
+                        <div>
+                        <WeeklyForcast daily={weather.daily}/>
+                        </div>
+
+                
             </>  
         : null
         }
+        
         </div>
     )
 }
@@ -237,6 +244,75 @@ const Quicksummary = ({chartdata, closesttime}) => {
                 <span>current precipitation: {data[0].precipitation} </span>
                 <span>current windspeed: {data[0].windspeed}</span>
             </b>
+        </div>
+    )
+}
+
+const WeeklyForcast = ({daily}) => {
+    console.log(daily)
+    return(
+        <div>
+        <h1>Forecast:</h1>
+        <div className="week">
+        {
+            daily.time.map((day,index) => {
+                return(
+                    <div className="day" key={index}>
+                    <div className="dayitem">
+                   <b> {day}: </b>
+                   {desc[daily.weathercode[index]]} 
+                    </div>
+                    <div  className="dayitem">
+                    Max Temp:{daily.apparent_temperature_max[index]}
+                    </div>
+                    <div className="dayitem">
+                    Min Temp:{daily.apparent_temperature_min[index]}
+                    </div>
+                    <div className="dayitem">
+                    Rain Total: {daily.precipitation_sum[index]} 
+                    </div>
+                    <div className="dayitem">
+                    Rain Hours: {daily.precipitation_hours[index]} 
+                    </div>
+                    <div className="dayitem">
+                    Sunrise: {daily.sunrise[index]} 
+                    </div>
+                    <div className="dayitem">
+                    Sunset: {daily.sunset[index]} 
+                    </div>
+                </div>
+                )
+            })
+        }
+        <style jsx>{`
+        .dayitem {
+            background-color:silver;
+            width:100%;
+        }
+        .day {
+            border: 1px solid black;
+            width: 100%
+            
+        }
+        .week {
+            border: 1px solid black;
+            display: flex; 
+            flex-direction:row; 
+            align-content:center; 
+        }
+
+        @media (max-width: 1300px) {
+            .week {
+                width: 100%; 
+                flex-direction: column;
+            }
+            .day {
+                border: 1px solid black;
+                min-width:100%;
+            }
+        }
+    `}</style>
+        </div>
         </div>
     )
 }

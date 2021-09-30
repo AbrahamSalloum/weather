@@ -24,7 +24,7 @@ export default function Home() {
   
     const callback = useCallback((coords) => {
       setLatLong(coords);
-      router.push(coords.join(','), undefined, { shallow: true })
+      router.push(coords.join(','), undefined, { shallow: true }) //changes /long,lat in url without reloading
     }, []);
 
     useEffect(() => {
@@ -32,10 +32,6 @@ export default function Home() {
         if(isCoords(r.loc[0].split(','))) {
           setLatLong(r.loc[0].split(','))
         }
-
-        // search for locatio based on name here and return coords
-        
-       
       }
     },[r])
 
