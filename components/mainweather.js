@@ -286,24 +286,27 @@ const WeeklyForcast = ({daily}) => {
         }
         <style jsx>{`
         .dayitem {
-            background-color:silver;
-            width:100%;
+            
+          
+            
         }
         .day {
+            background-color:silver;
+            display:flex;
             border: 1px solid black;
-            width: 100%
-            
+            flex-direction: column;
         }
         .week {
             border: 1px solid black;
             display: flex; 
-            flex-direction:row; 
             align-content:center; 
+
         }
 
         @media (max-width: 1300px) {
             .week {
-                width: 100%; 
+                width: 100%;
+                height:100%; 
                 flex-direction: column;
             }
             .day {
