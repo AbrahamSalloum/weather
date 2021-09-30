@@ -202,7 +202,7 @@ const MainWeather = ({slatlong}) => {
                                 flex-direction: row;
                                 width: 100%; 
                             }
-                            @media (max-width: 1300px) {
+                            @media (max-width: 1200px) {
                                 .split {
                                     width: 100%; 
                                     flex-direction: column;
@@ -303,7 +303,7 @@ const WeeklyForcast = ({daily}) => {
 
         }
 
-        @media (max-width: 1300px) {
+        @media (max-width: 1200px) {
             .week {
                 width: 100%;
                 height:100%; 
