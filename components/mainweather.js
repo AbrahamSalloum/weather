@@ -81,8 +81,8 @@ const MainWeather = ({slatlong}) => {
         const tz_name_f = await tz.json()
         setTz_name(tz_name_f.tz[0])
         const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
-        console.log(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
         const w = await weather.json()
+        console.log(w)
         setweather(w)
         getdata(w)
     }
@@ -162,7 +162,6 @@ const MainWeather = ({slatlong}) => {
     return (
         <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
             <div style={{"display": "flex", "flexDirection": "row", "width": "100%"}}>
-
                 <button onClick={() => getweather()} className="bbutton">Get Weather 🌞</button>
                 {!!chartdata ? <Quicksummary chartdata={chartdata} closesttime={closesttime}/> : null}
                 <style jsx>{`
@@ -178,7 +177,6 @@ const MainWeather = ({slatlong}) => {
             </div>
         {!!chartdata ? 
             <>
-               
                 <div className="graph">
                     <ResponsiveContainer width="100%" height={300}>
                         <ComposedChart
@@ -242,7 +240,7 @@ const MainWeather = ({slatlong}) => {
                                 }
                             }
                             .graph {
-                                 width: 100%;
+                                width: 100%;
                             }
                             .bbutton {
                                 background-color: skyblue;
@@ -256,10 +254,8 @@ const MainWeather = ({slatlong}) => {
                         
                         </div>
                         <div>
-                        <WeeklyForcast daily={weather.daily} tz_name={tz_name} />
+                        <WeeklyForcast weather={weather} tz_name={tz_name} />
                         </div>
-
-                
             </>  
         : null
         }
@@ -281,37 +277,47 @@ const Quicksummary = ({chartdata, closesttime}) => {
     )
 }
 
-const WeeklyForcast = ({daily, tz_name}) => {
+const WeeklyForcast = ({weather, tz_name}) => {
 
     return(
         <div>
         <h1>Forecast:</h1>
         <div className="week">
         {
-            daily.time.map((day,index) => {
+            weather.daily.time.map((day,index) => {
                 return(
-                    <div className="day" key={index} style={{"background": `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(/weather_dec/${desc_icon[daily.weathercode[index]]})`}}>
-                    <div className="dayitem">
-                   <b> {DateTime.fromISO(daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}: </b>
-                   {desc[daily.weathercode[index]]} 
+                    <div className="day" key={index} style={{"background": `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(/weather_dec/${desc_icon[weather.daily.weathercode[index]]})`}}>
+                    <div>
+                   <div className="day"><b>{DateTime.fromISO(weather.daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</b></div>
+                   <div><i>{desc[weather.daily.weathercode[index]]}</i></div> 
                     </div>
                     <div  className="dayitem">
-                    Max Temp:{daily.apparent_temperature_max[index]}
+                        <div className="day_title">Max Temp:</div> 
+                        <div className="day_value">{weather.daily.apparent_temperature_max[index]}</div>
+                        <div className="day_unit">{weather.daily_units.apparent_temperature_max}</div>
                     </div>
                     <div className="dayitem">
-                    Min Temp:{daily.apparent_temperature_min[index]}
+                        <div className="day_title">Min Temp:</div> 
+                        <div className="day_value">{weather.daily.apparent_temperature_min[index]}</div>  
+                        <div className="day_unit">{weather.daily_units.apparent_temperature_min}</div> 
                     </div>
                     <div className="dayitem">
-                    Rain Total: {daily.precipitation_sum[index]} 
+                        <div className="day_title">Rain Total:</div> 
+                        <div className="day_value">{weather.daily.precipitation_sum[index]}</div> 
+                        <div className="day_unit">{weather.daily_units.precipitation_sum}</div>
                     </div>
                     <div className="dayitem">
-                    Rain Hours: {daily.precipitation_hours[index]} 
+                        <div className="day_title">Rain Hours:</div> 
+                        <div className="day_value">{weather.daily.precipitation_hours[index]}</div> 
+                        <div className="day_unit">{weather.daily_units.precipitation_hours}</div> 
                     </div>
                     <div className="dayitem">
-                    Sunrise: {DateTime.fromISO(daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}
+                        <div className="day_title">Sunrise:</div> 
+                        <div className="day_value">{DateTime.fromISO(weather.daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}</div>
                     </div>
                     <div className="dayitem">
-                    Sunset: {DateTime.fromISO(daily.sunset[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}
+                        <div className="day_title">Sunset:</div>  
+                        <div className="day_value">{DateTime.fromISO(weather.daily.sunset[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}</div> 
                     </div>
                 </div>
                 )
@@ -319,7 +325,7 @@ const WeeklyForcast = ({daily, tz_name}) => {
         }
         <style jsx>{`
         .dayitem {
-
+            display:flex;
             
         }
         .day {
