@@ -290,7 +290,7 @@ const WeeklyForcast = ({daily}) => {
         {
             daily.time.map((day,index) => {
                 return(
-                    <div className="day" key={index} style={{"backgroundImage": `url(/weather_dec/${desc_icon[daily.weathercode[index]]})`}}>
+                    <div className="day" key={index} style={{"background": `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(/weather_dec/${desc_icon[daily.weathercode[index]]})`}}>
                     <div className="dayitem">
                    <b> {day}: </b>
                    {desc[daily.weathercode[index]]} 
@@ -319,8 +319,7 @@ const WeeklyForcast = ({daily}) => {
         }
         <style jsx>{`
         .dayitem {
-            background: rgba(0,0,0,0.0);
-          
+
             
         }
         .day {
@@ -328,8 +327,11 @@ const WeeklyForcast = ({daily}) => {
             display:flex;
             border: 1px solid black;
             flex-direction: column;
+            background-size: cover;
+            z-index: -1; 
             
         }
+
         .week {
             border: 1px solid black;
             display: flex; 
