@@ -256,7 +256,7 @@ const MainWeather = ({slatlong}) => {
                         
                         </div>
                         <div>
-                        <WeeklyForcast daily={weather.daily}/>
+                        <WeeklyForcast daily={weather.daily} tz_name={tz_name} />
                         </div>
 
                 
@@ -281,7 +281,7 @@ const Quicksummary = ({chartdata, closesttime}) => {
     )
 }
 
-const WeeklyForcast = ({daily}) => {
+const WeeklyForcast = ({daily, tz_name}) => {
 
     return(
         <div>
@@ -308,10 +308,10 @@ const WeeklyForcast = ({daily}) => {
                     Rain Hours: {daily.precipitation_hours[index]} 
                     </div>
                     <div className="dayitem">
-                    Sunrise: {daily.sunrise[index]} 
+                    Sunrise: {DateTime.fromISO(daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}
                     </div>
                     <div className="dayitem">
-                    Sunset: {daily.sunset[index]} 
+                    Sunset: {DateTime.fromISO(daily.sunset[index],{zone: tz_name}).toLocaleString(DateTime.TIME_24_SIMPLE)}
                     </div>
                 </div>
                 )
