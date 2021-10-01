@@ -102,7 +102,6 @@ const MainWeather = ({slatlong}) => {
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
-                    {tz_name}
                     {
                         payload.map((point, i) => {
                             return <span key={i} style={{"color": point.stroke}}>{`${point.name}: ${point.value} ${point.unit} `}<br/></span>
