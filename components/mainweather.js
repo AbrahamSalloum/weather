@@ -40,16 +40,16 @@ const MainWeather = ({slatlong}) => {
     const [latlong, setLatLong] = useState(slatlong)
     const [weather, setweather]  = useState(false)
     const [chartdata, setChartData] = useState(false)
-
+    const [tz_name, setTz_name] = useState('UTC')
     useEffect(() => {
         setLatLong(slatlong)
     },[slatlong])
     
     const getweather = async () => {
         const tz = await fetch(`/api/tz/${latlong.join(',')}`)
-        const tz_name = await tz.json()
-        console.log(tz_name)
-        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name.tz[0]}`)
+        const tz_name_f = await tz.json()
+        setTz_name(tz_name_f.tz[0])
+        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name}`)
         const w = await weather.json()
         setweather(w)
         getdata(w)
@@ -59,9 +59,9 @@ const MainWeather = ({slatlong}) => {
         let graphdata = []
         for(let i in w.hourly.time){
             graphdata.push({
-                unixtime: DateTime.fromISO(w.hourly.time[i],{ zone: 'utc'}).toMillis(), 
+                unixtime: DateTime.fromISO(w.hourly.time[i]).toMillis(), 
                 rawtime: w.hourly.time[i], 
-                name: DateTime.fromISO(w.hourly.time[i],{  zone: 'utc'}).toLocal().toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY), 
+                name: DateTime.fromISO(w.hourly.time[i],{zone: tz_name}).toLocaleString(DateTime.DATETIME_SHORT),
                 uv: w.hourly.temperature_2m[i], 
                 pv: w.hourly.apparent_temperature[i], 
                 cc: w.hourly.cloudcover[i], 
@@ -80,6 +80,7 @@ const MainWeather = ({slatlong}) => {
         })
         
         setChartData(q)
+        console.log(q)
     }
 
     const formatXAxis = (xtick) => {
@@ -145,7 +146,7 @@ const MainWeather = ({slatlong}) => {
             </div>
         {!!chartdata ? 
             <>
-                
+               
                 <div className="graph">
                     <ResponsiveContainer width="100%" height={300}>
                         <ComposedChart
