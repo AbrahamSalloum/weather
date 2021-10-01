@@ -131,7 +131,7 @@ const MainWeather = ({slatlong}) => {
     return (
         <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
             <div style={{"display": "flex", "flexDirection": "row", "width": "100%"}}>
-            {tz_name}
+
                 <button onClick={() => getweather()} className="bbutton">Get Weather 🌞</button>
                 {!!chartdata ? <Quicksummary chartdata={chartdata} closesttime={closesttime}/> : null}
                 <style jsx>{`
