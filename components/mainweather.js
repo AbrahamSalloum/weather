@@ -35,6 +35,37 @@ const desc = {
     "99":   "Thunderstorm with slight and heavy hail"
     }
 
+const desc_icon = {
+    0: "clear_day.svg",
+    1: "partly_cloudy_day.svg",
+    2: "partly_cloudy_day.svg",
+    3: "partly_cloudy_day.svg",
+    45: "fog.svg",
+    48: "fog.svg",
+    51: "drizzle.svg",
+    53: "drizzle.svg",
+    55: "drizzle.svg",
+    56: "freezing_drizzle.svg",
+    57: "freezing_drizzle.svg",
+    61: "rain_light.svg",
+    63: "rain_light.svg",
+    65: "rain_light.svg",
+    66: "freezing_rain.svg",
+    67: "freezing_rain.svg",
+    71: "snow_light.svg",
+    72: "snow_light.svg",
+    75: "snow_light.svg",
+    77: "ice_pellets_light.svg",
+    80: "rain.svg",
+    81: "rain.svg",
+    82: "rain.svg",
+    85: "rain_heavy.svg",
+    86: "rain_heavy.svg",
+    95: "tstorm.svg",
+    96:  "tstorm.svg",
+    99:  "tstorm.svg"
+}
+
 const MainWeather = ({slatlong}) => {
 
     const [latlong, setLatLong] = useState(slatlong)
@@ -259,7 +290,7 @@ const WeeklyForcast = ({daily}) => {
         {
             daily.time.map((day,index) => {
                 return(
-                    <div className="day" key={index}>
+                    <div className="day" key={index} style={{"backgroundImage": `url(/weather_dec/${desc_icon[daily.weathercode[index]]})`}}>
                     <div className="dayitem">
                    <b> {day}: </b>
                    {desc[daily.weathercode[index]]} 
@@ -288,15 +319,16 @@ const WeeklyForcast = ({daily}) => {
         }
         <style jsx>{`
         .dayitem {
-            
+            background: rgba(0,0,0,0.0);
           
             
         }
         .day {
-            background-color:silver;
+            //background-color:silver;
             display:flex;
             border: 1px solid black;
             flex-direction: column;
+            
         }
         .week {
             border: 1px solid black;
