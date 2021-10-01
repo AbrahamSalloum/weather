@@ -49,7 +49,8 @@ const MainWeather = ({slatlong}) => {
         const tz = await fetch(`/api/tz/${latlong.join(',')}`)
         const tz_name_f = await tz.json()
         setTz_name(tz_name_f.tz[0])
-        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name}`)
+        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
+        console.log(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
         const w = await weather.json()
         setweather(w)
         getdata(w)
@@ -80,7 +81,6 @@ const MainWeather = ({slatlong}) => {
         })
         
         setChartData(q)
-        console.log(q)
     }
 
     const formatXAxis = (xtick) => {
@@ -102,6 +102,7 @@ const MainWeather = ({slatlong}) => {
             return (
                 <div className="custom-tooltip" style={{"backgroundColor": "white", "border": "1px solid silver"}}>
                     <p className="label"><b>{`${label}`}</b></p>
+                    {tz_name}
                     {
                         payload.map((point, i) => {
                             return <span key={i} style={{"color": point.stroke}}>{`${point.name}: ${point.value} ${point.unit} `}<br/></span>
@@ -131,6 +132,7 @@ const MainWeather = ({slatlong}) => {
     return (
         <div style={{"display": "flex", "flexDirection": "column", "width": "100%"}}>
             <div style={{"display": "flex", "flexDirection": "row", "width": "100%"}}>
+            {tz_name}
                 <button onClick={() => getweather()} className="bbutton">Get Weather 🌞</button>
                 {!!chartdata ? <Quicksummary chartdata={chartdata} closesttime={closesttime}/> : null}
                 <style jsx>{`
@@ -250,7 +252,7 @@ const Quicksummary = ({chartdata, closesttime}) => {
 }
 
 const WeeklyForcast = ({daily}) => {
-    console.log(daily)
+
     return(
         <div>
         <h1>Forecast:</h1>

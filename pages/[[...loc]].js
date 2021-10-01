@@ -11,7 +11,7 @@ export default function Home() {
   const r = router.query
   
   const isCoords = (coords) => {
-    console.log(coords)
+    
     if(coords.length == 2){
       if((isNaN(coords[0]) && isNaN(coords[1])) === false){
         return true
@@ -33,7 +33,7 @@ export default function Home() {
           setLatLong(r.loc[0].split(','))
         }
       }
-    },[r])
+    },[router, r])
 
   while(router.isReady == false) return '...'
   
