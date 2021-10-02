@@ -72,6 +72,7 @@ const MainWeather = ({slatlong}) => {
     const [weather, setweather]  = useState(false)
     const [chartdata, setChartData] = useState(false)
     const [tz_name, setTz_name] = useState('UTC')
+    
     useEffect(() => {
         setLatLong(slatlong)
     },[slatlong])
@@ -326,23 +327,21 @@ const WeeklyForcast = ({weather, tz_name}) => {
         <style jsx>{`
         .dayitem {
             display:flex;
-            
         }
+
         .day {
-            //background-color:silver;
             display:flex;
             border: 1px solid black;
             flex-direction: column;
             background-size: cover;
             z-index: -1; 
-            
+            width:100%;
         }
 
         .week {
             border: 1px solid black;
             display: flex; 
             align-content:center; 
-
         }
 
         @media (max-width: 1200px) {
@@ -351,6 +350,7 @@ const WeeklyForcast = ({weather, tz_name}) => {
                 height:100%; 
                 flex-direction: column;
             }
+
             .day {
                 border: 1px solid black;
                 min-width:100%;

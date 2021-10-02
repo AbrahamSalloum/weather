@@ -38,27 +38,22 @@ export default function Home() {
   while(router.isReady == false) return '...'
   
   return (
-    <div><a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
     <div className={styles.container}>
+    <a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
       <Head>
         <title>Weather</title>
         <meta name="description" content="Weather" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
       <main className={styles.main}>
-        <h2 className={styles.title}>
-        Weather
-        </h2>  
-       Click in map for best guess location
-      
-      <VMap  parentCallback={callback} slatlong={latlong} /> 
-      <MainWeather slatlong={latlong} />  
+        <h2 className={styles.title}>Weather</h2>
+        <div>Click in map for best guess location</div>
+        <VMap  parentCallback={callback} slatlong={latlong} />
+        <MainWeather slatlong={latlong} />  
       </main>
       <footer className={styles.footer}>
             Data Provided by<pre> <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer"> https://open-meteo.com</a></pre>
       </footer>
-    </div>
     </div>
   ) 
 }

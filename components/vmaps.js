@@ -30,15 +30,30 @@ const  Vmap = ({parentCallback, slatlong}) => {
   }
 
     return(
-        <div style={{ height: "100%", width: "100%", margin: 0, padding: 0 }}>
-         
+        <div className="map_container">
         <MapContainer center={latlong} zoom={13} scrollWheelZoom={true} style={{ height: "450px", width: "100%" }}>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
         <InitialThings />
-      </MapContainer>           
+      </MapContainer>   
+      <style jsx>{`
+      .map_container {
+        margin-left: auto; 
+        margin-right: auto; 
+        display: block;
+        height: 100%; 
+        width: 95%; 
+      }
+
+      .width {
+        height: 100%; 
+        width: 100%; 
+        margin:0; 
+        padding: 0; 
+      }
+  `}</style>        
       </div>
     )
 }
