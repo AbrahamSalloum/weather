@@ -1,9 +1,9 @@
 
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import React from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Bar, Area, ReferenceLine, Brush,BarChart,ResponsiveContainer,Line } from 'recharts';
 import { DateTime } from "luxon";
-
+import {useMapProvider} from "./MapProvider";
 const desc = {
     "0":    "Clear sky",
     "1": 	"Mainly clear, partly cloudy, and overcast",
@@ -66,16 +66,12 @@ const desc_icon = {
     99:  "tstorm.svg"
 }
 
-const MainWeather = ({slatlong}) => {
+const MainWeather = () => {
 
-    const [latlong, setLatLong] = useState(slatlong)
+    const {latlong} = useMapProvider()
     const [weather, setweather]  = useState(false)
     const [chartdata, setChartData] = useState(false)
     const [tz_name, setTz_name] = useState('UTC')
-    
-    useEffect(() => {
-        setLatLong(slatlong)
-    },[slatlong])
     
     const getweather = async () => {
         const tz = await fetch(`/api/tz/${latlong.join(',')}`)

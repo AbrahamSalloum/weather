@@ -1,12 +1,16 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useCallback,useRef } from 'react';
+import { useEffect} from 'react';
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic';
 import MainWeather from '../components/mainweather'
+import SearchBox from '../components/SearchBox'
+import { MapProvider, useMapProvider } from "../components/MapProvider";
 const VMap = dynamic(() => import('../components/vmaps'),{ ssr: false })
 
+
 export default function Home() {
+  const {latlong, GloablsetLonglat} = useMapProvider()
   const router = useRouter()
   const r = router.query
   
@@ -20,24 +24,18 @@ export default function Home() {
     return false
   }
 
-  const [latlong, setLatLong] = useState([51.505, -0.09])
-  
-    const callback = useCallback((coords) => {
-      setLatLong(coords);
-      router.push(coords.join(','), undefined, { shallow: true }) //changes /long,lat in url without reloading
-    }, []);
-
     useEffect(() => {
       if(!!r.loc) {
         if(isCoords(r.loc[0].split(','))) {
-          setLatLong(r.loc[0].split(','))
+          GloablsetLonglat(r.loc[0].split(','))
         }
       }
-    },[router, r])
+    },[router, r, GloablsetLonglat])
 
   while(router.isReady == false) return '...'
   
   return (
+   
     <div className={styles.container}>
     <a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
       <Head>
@@ -48,12 +46,14 @@ export default function Home() {
       <main className={styles.main}>
         <h2 className={styles.title}>Weather</h2>
         <div>Click in map for best guess location</div>
-        <VMap  parentCallback={callback} slatlong={latlong} />
-        <MainWeather slatlong={latlong} />  
+        <SearchBox/>
+        <VMap />
+        <MainWeather />  
       </main>
       <footer className={styles.footer}>
             Data Provided by<pre> <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer"> https://open-meteo.com</a></pre>
       </footer>
     </div>
+   
   ) 
 }

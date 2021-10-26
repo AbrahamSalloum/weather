@@ -2,11 +2,13 @@
 
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent, useMapEvents, MapConsumer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useState } from 'react'
+import { useMapProvider } from "./MapProvider.js";
 
-const  Vmap = ({parentCallback, slatlong}) => {
 
-  const [latlong, setLatLong] = useState(slatlong)
+const  Vmap = () => {
+
+  const {setCmap} = useMapProvider()
+  const {latlong, GloablsetLonglat} = useMapProvider()
 
   const  InitialThings = () => {
     const map = useMapEvents({
@@ -15,23 +17,31 @@ const  Vmap = ({parentCallback, slatlong}) => {
       },
       load(){
         map.locate()
+        map.flyTo(latlong, 14, {
+          duration: 2
+        });
       },
       locationfound(ev) {
-        setLatLong(ev.latlng)
+        GloablsetLonglat(ev.latlng)
         map.setView(ev.latlng)
       },
       moveend(ev){
-      let ltlng = [ev.target.getCenter().lat, ev.target.getCenter().lng]
-      setLatLong(ltlng)
-      parentCallback(ltlng)
+        let ltlng = [ev.target.getCenter().lat, ev.target.getCenter().lng]
+        GloablsetLonglat(ltlng)
       },
     }) 
     return null
   }
 
+
     return(
         <div className="map_container">
-        <MapContainer center={latlong} zoom={13} scrollWheelZoom={true} style={{ height: "450px", width: "100%" }}>
+        <MapContainer 
+          center={latlong} 
+          zoom={13} 
+          scrollWheelZoom={true} 
+          whenCreated={setCmap}
+          style={{ height: "450px", width: "100%" }}> 
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -53,7 +63,7 @@ const  Vmap = ({parentCallback, slatlong}) => {
         margin:0; 
         padding: 0; 
       }
-  `}</style>        
+    `}</style>        
       </div>
     )
 }
