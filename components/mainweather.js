@@ -79,7 +79,6 @@ const MainWeather = () => {
         setTz_name(tz_name_f.tz[0])
         const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
         const w = await weather.json()
-        console.log(w)
         setweather(w)
         getdata(w)
     }
@@ -242,7 +241,7 @@ const MainWeather = () => {
                             .bbutton {
                                 background-color: skyblue;
                                 border: none;
-                                padding": 5px;
+                                padding: 5px;
                                 white-space: "nowrap; 
                                 text-align: center;
                                 height: fit-content;
@@ -264,7 +263,7 @@ const MainWeather = () => {
 const Quicksummary = ({chartdata, closesttime}) => {
     const data = chartdata.filter((ele) => ele.name == closesttime())
     return(
-        <div style={{"padding-left": "5px"}}>
+        <div style={{"paddingLeft": "5px"}}>
             <b>
                 <span>current temp: {data[0].uv}  (feels like: {data[0].pv}) </span>
                 <span>current precipitation: {data[0].precipitation} </span>

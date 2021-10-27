@@ -4,30 +4,56 @@ import { useMapProvider } from "./MapProvider.js";
 const SearchBox = () => {
 
     const [value, Setvalue] = useState('')
-    const [results, setResults] = useState(false)
-    const [coords, setCoords] = useState(false)
+    const [results, setResults] = useState(null)
+    const [colour, setColour] = useState(null)
     const {cmap} = useMapProvider()
-    const {GloablsetLonglat} = useMapProvider()
+    const {setLatLong} = useMapProvider()
     const SearchResults = () => {
+
+        function getFlagEmoji(countryCode) {
+            return countryCode.toUpperCase().replace(/./g, char => 
+                String.fromCodePoint(127397 + char.charCodeAt())
+            );
+          }
         
         return(
             <div>
            {
             results.map((r,i) => {
                 return(
-                    <div key={i} style={{"border": "1px solid black", "display": "flex"}} onClick={() => {
+                    <div key={i} className="searchResults" onClick={() => {
                         cmap.setView([r.latitude, r.longitude])
-                        GloablsetLonglat([r.latitude, r.longitude])
-                        Setvalue("")
-                    }}>
-                    <div>{r.name}</div>
-                    <div>({r.latitude}, {r.longitude})</div>
-                    <div>{r.country}</div>
-                    <div>{r.admin1}</div>
+                        setLatLong([r.latitude, r.longitude])
+                        setResults(null)
+                        
+                    }}
+
+                        >
+                    <div className="searchdata" >{r.name} {r.admin2} {r.admin1}</div>
+                    <div className="searchdata" >{getFlagEmoji(r.country_code)}</div>
                     </div>
                 )
             })
             }
+            <style jsx>{`
+            .searchResults {
+                display: grid;
+                grid-auto-columns: 1fr;
+                grid-auto-flow: column;
+                background-color: white; 
+            }
+      
+            .searchdata {
+                border-bottom: 1px solid #;
+                grid-auto-flow: column;
+                padding: 5px; 
+                
+            }
+            .searchResults:hover {
+                background-color: silver;
+            }
+            
+          `}</style> 
             </div>
         )
     }
@@ -55,13 +81,12 @@ const SearchBox = () => {
             <form  onSubmit={handleKeyDown}>
             <div>
                 <input
-                placeholder="Story Keyword"
+                placeholder="Location Keyword"
                 value={value}
                 onChange={change}
                 />
                 <button type="submit">Search</button>
-                {!!results && value ? <SearchResults /> : null }
-                {coords}
+                {!!results ? <SearchResults /> : null }
             </div>
             </form>
         </div>

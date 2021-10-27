@@ -5,17 +5,16 @@ import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic';
 import MainWeather from '../components/mainweather'
 import SearchBox from '../components/SearchBox'
-import { MapProvider, useMapProvider } from "../components/MapProvider";
+import { useMapProvider } from "../components/MapProvider";
 const VMap = dynamic(() => import('../components/vmaps'),{ ssr: false })
 
 
 export default function Home() {
-  const {latlong, GloablsetLonglat} = useMapProvider()
+  const {latlong, setLatLong} = useMapProvider()
   const router = useRouter()
   const r = router.query
   
   const isCoords = (coords) => {
-    
     if(coords.length == 2){
       if((isNaN(coords[0]) && isNaN(coords[1])) === false){
         return true
@@ -25,15 +24,20 @@ export default function Home() {
   }
 
     useEffect(() => {
-      if(!!r.loc) {
-        if(isCoords(r.loc[0].split(','))) {
-          GloablsetLonglat(r.loc[0].split(','))
-        }
+      if(!!r.loc == false) return                             // if no coord in url return
+      if( isCoords(r.loc[0].split(',')) ){                    // if coords makes snese then:       
+        setLatLong(r.loc[0].split(','))                       // set as global-coords
       }
-    },[router, r, GloablsetLonglat])
+    }, [])
+
+    useEffect(() => {
+    if(router.isReady == false) return
+      router.push(latlong.join(','), undefined, { shallow: true })
+      
+    }, [latlong])
+
 
   while(router.isReady == false) return '...'
-  
   return (
    
     <div className={styles.container}>
@@ -45,7 +49,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <h2 className={styles.title}>Weather</h2>
-        <div>Click in map for best guess location</div>
+        <div>Click in map for best guess location or search:</div>
         <SearchBox/>
         <VMap />
         <MainWeather />  

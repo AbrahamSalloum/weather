@@ -1,14 +1,13 @@
 
 
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent, useMapEvents, MapConsumer } from 'react-leaflet'
+import { MapContainer, TileLayer,useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useMapProvider } from "./MapProvider.js";
-
 
 const  Vmap = () => {
 
   const {setCmap} = useMapProvider()
-  const {latlong, GloablsetLonglat} = useMapProvider()
+  const {latlong, setLatLong} = useMapProvider()
 
   const  InitialThings = () => {
     const map = useMapEvents({
@@ -16,18 +15,18 @@ const  Vmap = () => {
         map.locate()
       },
       load(){
-        map.locate()
+        //map.locate()
         map.flyTo(latlong, 14, {
           duration: 2
         });
       },
       locationfound(ev) {
-        GloablsetLonglat(ev.latlng)
+        setLatLong([ev.latlng[0], ev.latlng[1]])
         map.setView(ev.latlng)
       },
       moveend(ev){
         let ltlng = [ev.target.getCenter().lat, ev.target.getCenter().lng]
-        GloablsetLonglat(ltlng)
+        setLatLong(ltlng)
       },
     }) 
     return null
