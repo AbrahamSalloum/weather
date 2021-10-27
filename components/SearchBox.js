@@ -17,7 +17,7 @@ const SearchBox = () => {
         }
         
         return(
-            <div>
+            <div className="searchContainer">
            {
             results.map((r,i) => {
                 return(
@@ -45,13 +45,18 @@ const SearchBox = () => {
             }
       
             .searchdata {
-                border-bottom: 1px solid #;
+                
                 grid-auto-flow: column;
                 padding: 5px; 
                 
             }
+            
             .searchResults:hover {
                 background-color: silver;
+            }
+
+            .searchContainer {
+                border: 1px solid silver; 
             }
             
           `}</style> 

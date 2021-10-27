@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect} from 'react';
+import { useEffect, useState} from 'react';
 import styles from '../styles/Home.module.css'
 import dynamic from 'next/dynamic';
 import MainWeather from '../components/mainweather'
@@ -10,40 +9,20 @@ const VMap = dynamic(() => import('../components/vmaps'),{ ssr: false })
 
 
 export default function Home() {
-  const {latlong, setLatLong} = useMapProvider()
-  const router = useRouter()
-  const r = router.query
-  
-  const isCoords = (coords) => {
-    if(coords.length == 2){
-      if((isNaN(coords[0]) && isNaN(coords[1])) === false){
-        return true
-      }
-    }
-    return false
-  }
+  const {latlong} = useMapProvider()
+  const [host, setHost] = useState(null)
 
-    // useEffect(() => {
-    //   if(!!r.loc == false) return                             // if no coord in url return
-    //   if( isCoords(r.loc[0].split(',')) ){                    // if coords makes snese then:       
-    //     setLatLong(r.loc[0].split(','))                       // set as global-coords
-    //   }
-    // }, [r])
+  useEffect(() => {
+    setHost(window.location.host)
+  }, [])
 
-    // useEffect(() => {
-    // if(router.isReady == false) return
-    //   router.push(latlong.join(','), undefined, { shallow: true })
-      
-    // }, [latlong])
-
-
-  while(router.isReady == false) return '...'
+ 
   return (
    
     <div className={styles.container}>
     <div className="menu">
-    <div><a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a></div>
-    <div><SearchBox/></div>
+    <div><a href={`//${host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a></div>
+    <div className="searchWrapper"><SearchBox/></div>
     </div>
       <Head>
         <title>Weather</title>
@@ -65,7 +44,6 @@ export default function Home() {
         display: flex; 
         width: 100%;
         justify-content: space-between;
-       
       }
 
       @media (max-width: 500px) {
@@ -74,8 +52,10 @@ export default function Home() {
           justify-content: space-evenly;
           width: 100%;
         }
-
-
+    }
+    .searchWrapper {
+      height: 0px; 
+      z-index: 999; 
     }
   `}</style>
     </div>
