@@ -23,18 +23,18 @@ export default function Home() {
     return false
   }
 
-    useEffect(() => {
-      if(!!r.loc == false) return                             // if no coord in url return
-      if( isCoords(r.loc[0].split(',')) ){                    // if coords makes snese then:       
-        setLatLong(r.loc[0].split(','))                       // set as global-coords
-      }
-    }, [])
+    // useEffect(() => {
+    //   if(!!r.loc == false) return                             // if no coord in url return
+    //   if( isCoords(r.loc[0].split(',')) ){                    // if coords makes snese then:       
+    //     setLatLong(r.loc[0].split(','))                       // set as global-coords
+    //   }
+    // }, [r])
 
-    useEffect(() => {
-    if(router.isReady == false) return
-      router.push(latlong.join(','), undefined, { shallow: true })
+    // useEffect(() => {
+    // if(router.isReady == false) return
+    //   router.push(latlong.join(','), undefined, { shallow: true })
       
-    }, [latlong])
+    // }, [latlong])
 
 
   while(router.isReady == false) return '...'
