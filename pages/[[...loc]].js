@@ -41,7 +41,10 @@ export default function Home() {
   return (
    
     <div className={styles.container}>
-    <a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a>
+    <div className="menu">
+    <div><a href={`//${window.location.host}/${latlong.join(',')}`}>{`/${latlong.join(',')}`}</a></div>
+    <div><SearchBox/></div>
+    </div>
       <Head>
         <title>Weather</title>
         <meta name="description" content="Weather" />
@@ -49,14 +52,32 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <h2 className={styles.title}>Weather</h2>
-        <div>Click in map for best guess location or search:</div>
-        <SearchBox/>
+        <div>Click in map for best guess location or search</div>
+        
         <VMap />
         <MainWeather />  
       </main>
       <footer className={styles.footer}>
             Data Provided by<pre> <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer"> https://open-meteo.com</a></pre>
       </footer>
+      <style jsx>{`
+      .menu {
+        display: flex; 
+        width: 100%;
+        justify-content: space-between;
+       
+      }
+
+      @media (max-width: 500px) {
+        .menu {
+          flex-direction: column; 
+          justify-content: space-evenly;
+          width: 100%;
+        }
+
+
+    }
+  `}</style>
     </div>
    
   ) 

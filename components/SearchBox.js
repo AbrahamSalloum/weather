@@ -14,7 +14,7 @@ const SearchBox = () => {
             return countryCode.toUpperCase().replace(/./g, char => 
                 String.fromCodePoint(127397 + char.charCodeAt())
             );
-          }
+        }
         
         return(
             <div>
@@ -41,6 +41,7 @@ const SearchBox = () => {
                 grid-auto-columns: 1fr;
                 grid-auto-flow: column;
                 background-color: white; 
+                width: 400px; 
             }
       
             .searchdata {
@@ -68,6 +69,7 @@ const SearchBox = () => {
 
     const change = (event) => {
         Setvalue(event.target.value)
+        if(event.target.value == "") setResults(null)
     };
 
 
@@ -86,7 +88,7 @@ const SearchBox = () => {
                 onChange={change}
                 />
                 <button type="submit">Search</button>
-                {!!results ? <SearchResults /> : null }
+                {!!results && !!value ? <SearchResults /> : null }
             </div>
             </form>
         </div>
