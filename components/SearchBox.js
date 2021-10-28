@@ -5,7 +5,6 @@ const SearchBox = () => {
 
     const [value, Setvalue] = useState('')
     const [results, setResults] = useState(null)
-    const [colour, setColour] = useState(null)
     const {cmap} = useMapProvider()
     const {setLatLong} = useMapProvider()
     const SearchResults = () => {
@@ -18,17 +17,14 @@ const SearchBox = () => {
         
         return(
             <div className="searchContainer">
-           {
+            {
             results.map((r,i) => {
                 return(
                     <div key={i} className="searchResults" onClick={() => {
                         cmap.setView([r.latitude, r.longitude])
                         setLatLong([r.latitude, r.longitude])
                         setResults(null)
-                        
-                    }}
-
-                        >
+                    }}>
                     <div className="searchdata" >{r.name} {r.admin2} {r.admin1}</div>
                     <div className="searchdata" >{getFlagEmoji(r.country_code)}</div>
                     </div>
@@ -43,7 +39,7 @@ const SearchBox = () => {
                 background-color: white; 
                 width: 400px; 
             }
-      
+
             .searchdata {
                 
                 grid-auto-flow: column;
@@ -58,8 +54,7 @@ const SearchBox = () => {
             .searchContainer {
                 border: 1px solid silver; 
             }
-            
-          `}</style> 
+            `}</style> 
             </div>
         )
     }
@@ -86,16 +81,27 @@ const SearchBox = () => {
     return(
         <div>
             <form  onSubmit={handleKeyDown}>
-            <div>
-                <input
-                placeholder="Location Keyword"
-                value={value}
-                onChange={change}
-                />
-                <button type="submit">Search</button>
-                {!!results && !!value ? <SearchResults /> : null }
-            </div>
+                <div>
+                    <div className="searchBox">
+                        <input
+                            placeholder="Location Keyword"
+                            value={value}
+                            onChange={change}
+                        />
+                        <button type="submit">Search</button>
+                    </div>
+                    {!!results && !!value ? <SearchResults /> : null }
+                </div>
             </form>
+            <style jsx>{`
+
+
+            .searchBox {
+                width: 400px; 
+                display:flex; 
+                justify-content:  flex-end;
+            }
+            `}</style> 
         </div>
     )
 }

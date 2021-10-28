@@ -52,11 +52,13 @@ export default function Home() {
           justify-content: space-evenly;
           width: 100%;
         }
-    }
-    .searchWrapper {
-      height: 0px; 
-      z-index: 999; 
-    }
+      }
+      
+      .searchWrapper {
+        height: 0px; 
+        z-index: 999; 
+      }
+
   `}</style>
     </div>
    

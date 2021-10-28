@@ -1,10 +1,10 @@
 import '../styles/globals.css'
-import { MapProvider, useMapProvider } from "../components/MapProvider";
+import { MapProvider } from "../components/MapProvider";
 
 function MyApp({ Component, pageProps }) {
   return(
     <MapProvider>
-    <Component {...pageProps} />
+      <Component {...pageProps} />
     </MapProvider>
   )
 }

@@ -284,8 +284,8 @@ const WeeklyForcast = ({weather, tz_name}) => {
                 return(
                     <div className="day" key={index} style={{"background": `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(/weather_dec/${desc_icon[weather.daily.weathercode[index]]})`}}>
                     <div>
-                   <div className="day"><b>{DateTime.fromISO(weather.daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</b></div>
-                   <div><i>{desc[weather.daily.weathercode[index]]}</i></div> 
+                    <div className="day"><b>{DateTime.fromISO(weather.daily.sunrise[index],{zone: tz_name}).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</b></div>
+                    <div><i>{desc[weather.daily.weathercode[index]]}</i></div> 
                     </div>
                     <div  className="dayitem">
                         <div className="day_title">Max Temp:</div> 

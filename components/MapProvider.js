@@ -13,9 +13,7 @@ export const MapProvider = ({ children }) => {
   const r = router.query
   const [latlong, setLatLong] = useState([51.505, -0.09]);
 
-  // useEffect(() => {
-  //   router.push(latlong.join(','), undefined, { shallow: true })
-  // }, [latlong, router])
+
 
   const isCoords = (coords) => {
     if(coords.length == 2){
@@ -27,11 +25,15 @@ export const MapProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if(!!r.loc == false) return                             // if no coord in url return
+    if(!!r.loc == false) return                             // if no coord in url return                 
     if( isCoords(r.loc[0].split(',')) ){                    // if coords makes snese then:      
       setLatLong(r.loc[0].split(','))                       // set as global-coords
     }
-  }, [r.loc])
+  }, [r])
+
+  // useEffect(() => {
+  //   router.push(latlong.join(','), undefined, { shallow: true })
+  // }, [latlong])
   
   return (
     <MapContext.Provider
