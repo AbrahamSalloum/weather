@@ -94,12 +94,17 @@ const SearchBox = () => {
                 </div>
             </form>
             <style jsx>{`
-
-
             .searchBox {
                 width: 400px; 
                 display:flex; 
                 justify-content:  flex-end;
+            }
+            @media (max-width: 500px) {
+                .searchBox {
+                    flex-direction: column; 
+                    justify-content: space-evenly;
+                    width: 100%;
+                }
             }
             `}</style> 
         </div>
