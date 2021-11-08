@@ -32,28 +32,28 @@ const SearchBox = () => {
             })
             }
             <style jsx>{`
-            .searchResults {
-                display: grid;
-                grid-auto-columns: 1fr;
-                grid-auto-flow: column;
-                background-color: white; 
-                width: 400px; 
-            }
-
-            .searchdata {
+                .searchResults {
+                    display: grid;
+                    grid-auto-columns: 1fr;
+                    grid-auto-flow: column;
+                    background-color: white; 
+                    width: 400px; 
+                }
                 
-                grid-auto-flow: column;
-                padding: 5px; 
-                
-            }
-            
-            .searchResults:hover {
-                background-color: silver;
-            }
+                .searchdata {
+                    
+                    grid-auto-flow: column;
+                    padding: 5px; 
+                    
+                }
 
-            .searchContainer {
-                border: 1px solid silver; 
-            }
+                .searchResults:hover {
+                    background-color: silver;
+                }
+
+                .searchContainer {
+                    border: 1px solid silver; 
+                }
             `}</style> 
             </div>
         )

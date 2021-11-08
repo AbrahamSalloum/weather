@@ -1,19 +1,9 @@
 import React from 'react';
-import { DateTime } from "luxon";
+import {closesttime} from '../utils/data'
 
 const Quicksummary = ({chartdata}) => {
 
-    const closesttime = () => {
-        const data = chartdata
-        const currtime = DateTime.now().toLocal().toMillis()
-        let closest = [...data].sort(function(a, b){
-        return Math.abs(currtime-a.unixtime) - Math.abs(currtime-b.unixtime);
-        });
-        return closest[0].name
-    }
-
-
-    const data = chartdata.filter((ele) => ele.name == closesttime())
+    const data = chartdata.filter((ele) => ele.name == closesttime(chartdata))
     return(
         <div style={{"paddingLeft": "5px"}}>
             <b>

@@ -87,17 +87,20 @@ const MainWeather = () => {
                             display: flex; 
                             flex-direction: row;
                             width: 100%; 
+                            height: 100%;
                         }
 
                         @media (max-width: 1200px) {
                             .split {
                                 width: 100%; 
+                                height: 100%;
                                 flex-direction: column;
                             }
                         }
 
                         .graph {
                             width: 100%;
+                            height: 100%;
                         }
 
                         .bbutton {

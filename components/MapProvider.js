@@ -13,8 +13,6 @@ export const MapProvider = ({ children }) => {
   const r = router.query
   const [latlong, setLatLong] = useState([51.505, -0.09]);
 
-
-
   const isCoords = (coords) => {
     if(coords.length == 2){
       if((isNaN(coords[0]) && isNaN(coords[1])) === false){
@@ -31,10 +29,6 @@ export const MapProvider = ({ children }) => {
     }
   }, [r])
 
-  // useEffect(() => {
-  //   router.push(latlong.join(','), undefined, { shallow: true })
-  // }, [latlong])
-  
   return (
     <MapContext.Provider
       value={{ cmap, setCmap, latlong, setLatLong }}
