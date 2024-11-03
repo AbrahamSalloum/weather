@@ -21,7 +21,7 @@ const MainWeather = () => {
         const tz = await fetch(`/api/tz/${latlong.join(',')}`)
         const tz_name_f = await tz.json()
         setTz_name(tz_name_f.tz[0])
-        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relativehumitidy_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
+        const weather = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latlong[0]}&longitude=${latlong[1]}&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,cloudcover,windspeed_10m,cloudcover,weathercode,winddirection_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,precipitation_hours&timezone=${tz_name_f.tz[0]}`)
         const w = await weather.json()
         setweather(w)
         getdata(w)
@@ -41,7 +41,7 @@ const MainWeather = () => {
                 precipitation: w.hourly.precipitation[i], 
                 windspeed: w.hourly.windspeed_10m[i],
                 winddirection: w.hourly.winddirection_10m[i],
-                humidity: w.hourly.relativehumitidy_2m[i]
+                humidity: w.hourly.relative_humidity_2m[i]
             })
     }
 
