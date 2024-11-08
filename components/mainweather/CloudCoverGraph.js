@@ -15,8 +15,9 @@ import {closesttime} from '../utils/data'
                     <Tooltip />
                     <Bar dataKey="cc" fill="#82ca9d" name="cloudcover" unit="%"  yAxisId="degy"  xAxisId="name"/>
                     <ReferenceLine x={closesttime(chartdata)} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy"  xAxisId="name"/>
-                    <Brush endIndex={chartdata.length / 4} />
                     <Legend />
+                    <Brush endIndex={chartdata.length / 4} />
+                   
                 </BarChart>
         </ResponsiveContainer>
         )

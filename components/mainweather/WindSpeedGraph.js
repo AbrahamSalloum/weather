@@ -26,8 +26,9 @@ const WindSpeedGraph = ({chartdata}) => {
                 <Tooltip content={RenderTooltipWind} />
                 <Bar dataKey="windspeed" fill="#8884d8" name="windspeed" unit="km/h"  yAxisId="degy"  xAxisId="name"/>
                 <ReferenceLine x={closesttime(chartdata)} label="Now" stroke="red" strokeDasharray="3 3" yAxisId="degy"  xAxisId="name"/>
-                <Brush endIndex={chartdata.length / 4} />
                 <Legend />
+                <Brush endIndex={chartdata.length / 4} />
+                
             </BarChart>
         </ResponsiveContainer>
     )
